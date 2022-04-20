@@ -1,10 +1,11 @@
 import subprocess
 import shlex
+from languages.languagemanager import LanguageManager
 
 def main():
-    args = shlex.split("g++ -o src_files/a.out src_files/main.cpp")
-    subprocess.Popen(args)
-    subprocess.Popen("./src_files/a.out")
+    lm = LanguageManager()
+    lm.run("src_files/main.cpp")
+
 
 if __name__ == "__main__":
     main()
