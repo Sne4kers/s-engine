@@ -24,7 +24,7 @@ class CPP17(CompiledLanguage):
 class Python(Language):
     def __init__(self):
         self.file_extensions = ["py"]
-        self.cc = "python"
+        self.cc = "python3"
         self.full_name = "Python 3.10.4"
         super().__init__()
     
