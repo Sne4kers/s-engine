@@ -4,7 +4,7 @@ import subprocess
 import languages.LanguageLibrary
 
 LANG = []
-EXTMAP = {}
+NAMEMAP = {}
 EXTLIST = []
 
 class LanguageManager():
@@ -13,17 +13,16 @@ class LanguageManager():
             if not name.startswith('__') and name != "CompiledLanguage" and name != "Language":
                 language = entity()
                 LANG.append(language)
+                NAMEMAP[language.cc] = language
                 for extension in language.file_extensions:
-                    EXTMAP[extension] = language
                     EXTLIST.append(extension)
 
-    def run(self, filepath):
-        extension = filepath.split("/")[-1].split(".")[1]
-        if extension not in EXTLIST:
-            print(extension + " :")
-            print("EXTENSION NOT SUPPORTED")
+    def run(self, language, filepath):
+        if language in NAMEMAP:
+            selected_language = NAMEMAP[language]
+        else:
+            print("LANGUAGE IS NOT SUPPORTED")
             return
-        selected_language = EXTMAP[extension]
         
         if selected_language.__class__.__bases__[0].__name__ == "CompiledLanguage":
             compile_command = selected_language.compile_command(filepath)
