@@ -2,9 +2,10 @@ from languages.language import Language
 from languages.compiledlanguage import CompiledLanguage
 import subprocess
 import languages.LanguageLibrary
+from grading.test import Test
 
 LANG = []
-EXTMAP = {}
+NAMEMAP = {}
 EXTLIST = []
 
 class LanguageManager():
@@ -13,18 +14,20 @@ class LanguageManager():
             if not name.startswith('__') and name != "CompiledLanguage" and name != "Language":
                 language = entity()
                 LANG.append(language)
+                NAMEMAP[language.cc] = language
                 for extension in language.file_extensions:
-                    EXTMAP[extension] = language
                     EXTLIST.append(extension)
 
-    def run(self, filepath):
-        extension = filepath.split("/")[-1].split(".")[1]
-        if extension not in EXTLIST:
-            print(extension + " :")
-            print("EXTENSION NOT SUPPORTED")
+    def run(self, language, filepath):
+        if language in NAMEMAP:
+            selected_language = NAMEMAP[language]
+        else:
+            print("LANGUAGE IS NOT SUPPORTED")
             return
-        selected_language = EXTMAP[extension]
         
+        test = Test("Yehor", "Hello, Yehor!", 1)
+
+
         if selected_language.__class__.__bases__[0].__name__ == "CompiledLanguage":
             compile_command = selected_language.compile_command(filepath)
             print(compile_command)
@@ -32,7 +35,13 @@ class LanguageManager():
             compile_exec.wait()
             run_command = selected_language.run_command(filepath)
             print(run_command)
-            run_exec = subprocess.Popen(run_command)
+            run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+            result = run_exec.communicate(input=test.test_input.encode())[0]
+            if result == test.test_output.encode():
+                
+                print("Successfull")
+            else:
+                print("Failed")
 
         else:
             run_command = selected_language.run_command(filepath)
