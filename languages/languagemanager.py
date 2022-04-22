@@ -2,6 +2,7 @@ from languages.language import Language
 from languages.compiledlanguage import CompiledLanguage
 import subprocess
 import languages.LanguageLibrary
+from grading.test import Test
 
 LANG = []
 NAMEMAP = {}
@@ -24,6 +25,9 @@ class LanguageManager():
             print("LANGUAGE IS NOT SUPPORTED")
             return
         
+        test = Test("Yehor", "Hello, Yehor!", 1)
+
+
         if selected_language.__class__.__bases__[0].__name__ == "CompiledLanguage":
             compile_command = selected_language.compile_command(filepath)
             print(compile_command)
@@ -31,7 +35,13 @@ class LanguageManager():
             compile_exec.wait()
             run_command = selected_language.run_command(filepath)
             print(run_command)
-            run_exec = subprocess.Popen(run_command)
+            run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+            result = run_exec.communicate(input=test.test_input.encode())[0]
+            if result == test.test_output.encode():
+                
+                print("Successfull")
+            else:
+                print("Failed")
 
         else:
             run_command = selected_language.run_command(filepath)
