@@ -3,6 +3,7 @@ from languages.compiledlanguage import CompiledLanguage
 import subprocess
 import languages.LanguageLibrary
 from grading.test import Test
+import time
 
 LANG = []
 NAMEMAP = {}
@@ -35,10 +36,11 @@ class LanguageManager():
             compile_exec.wait()
             run_command = selected_language.run_command(filepath)
             print(run_command)
+
             run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
             result = run_exec.communicate(input=test.test_input.encode())[0]
-            if result == test.test_output.encode():
-                
+            print(result)
+            if result.decode().strip() == test.test_output:
                 print("Successfull")
             else:
                 print("Failed")
