@@ -13,10 +13,16 @@ class SingleTest(Test):
             self.result = True
 
     def report(self):
-        report = {"test_input" : self.test_input, "test_output" : self.test_output, "points" : self.points}
+        report = {
+            "test_input" : self.test_input, 
+            "test_output" : self.test_output, 
+            "points" : self.points
+            }
+
         if self.result == True:
             report["result"] = "passed"
         else:
             report["result"] = "failed"
+            
         return report
         

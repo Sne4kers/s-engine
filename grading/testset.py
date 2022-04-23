@@ -14,18 +14,32 @@ class TestSet():
 
     def report(self, short_report):
         report = {}
-        report["testset_id"] = self.testset_id
-        report["total_points"] = self.total_points
         earned_points = 0
         tests = {}
         counter = 0
+
         for test in self.tests:
-            if test.result:
-                earned_points += test.points
+
+            if isinstance(test, grading.singletest.SingleTest):
+                if test.result:
+                    earned_points += test.points
+
+            if isinstance(test, grading.blocktest.BlockTest):
+                passed = True
+                for test_in_block in test.tests:
+                    passed = passed and test.tests[test_in_block].result
+                if passed:
+                    earned_points += test.points
+
             tests[counter] = test.report()
             counter += 1
+
+        report["testset_id"] = self.testset_id
+        report["total_points"] = self.total_points
         report["earned_points"] = earned_points
+        
         if not short_report:
             report["tests"] = tests
+
         return json.dumps(report, indent=4)
         

@@ -2,6 +2,7 @@ from languages.language import Language
 from languages.compiledlanguage import CompiledLanguage
 import languages.LanguageLibrary
 from grading.singletest import SingleTest 
+from grading.blocktest import BlockTest 
 from grading.testset import TestSet 
 import subprocess
 import time
@@ -21,17 +22,27 @@ class LanguageManager():
                     EXTLIST.append(extension)
 
     def run(self, language, filepath):
+        # Check if language is supported
         if language in NAMEMAP:
             selected_language = NAMEMAP[language]
         else:
             print("LANGUAGE IS NOT SUPPORTED")
             return
         
-        testSet = TestSet(1)
-        testSet.add_test(SingleTest("3\n26 36\n7 5\n4 -2\n", "62\n12\n2\n", 1))
-        testSet.add_test(SingleTest("2\n26 36\n7 5\n4 -2", "62\n12", 1))
+        # Load test set - will be replaced with automatic load in future
+        test_set = TestSet(1)
 
+        test_set.add_test(SingleTest("3\n26 36\n7 5\n4 -2\n", "62\n12\n2\n", 1))
+        test_set.add_test(SingleTest("2\n26 36\n7 5\n4 -2", "62\n12", 1))
 
+        block = BlockTest(3)
+        block.add_test(SingleTest("3\n1 1\n2 3\n1 -2\n", "2\n5\n-1\n", 1))
+        block.add_test(SingleTest("3\n1 2\n2 3\n1 -2\n", "3\n5\n-1\n", 1))
+        block.add_test(SingleTest("3\n1 3\n2 3\n1 -2\n", "5\n5\n-1\n", 1))
+
+        test_set.add_test(block)
+
+        # Compile program first if language uses compiler
         if isinstance(selected_language, CompiledLanguage):
             compile_command = selected_language.compile_command(filepath)
             compile_exec = subprocess.Popen(compile_command)
@@ -39,9 +50,20 @@ class LanguageManager():
 
         run_command = selected_language.run_command(filepath)
 
-        for test in testSet.tests:
-            run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-            result = run_exec.communicate(input=test.test_input.encode())[0]
-            test.evaluate(result.decode().strip())
+        # For each test run the program and test with available input
+        for test in test_set.tests:
+
+            if isinstance(test, SingleTest):
+                run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                result = run_exec.communicate(input=test.test_input.encode())[0]
+                test.evaluate(result.decode().strip())
+
+            if isinstance(test, BlockTest):
+                for key_test_in_block in BlockTest.tests:
+                    test_in_block = test.tests[key_test_in_block]
+                    run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                    result = run_exec.communicate(input=test_in_block.test_input.encode())[0]
+                    test.evaluate(result.decode().strip(), key_test_in_block)
         
-        print(testSet.report(False))
+        # Print the report
+        print(test_set.report(False))
