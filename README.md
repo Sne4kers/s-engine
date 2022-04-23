@@ -19,6 +19,6 @@ S-engine is currently on very early stage of development but we expect it to sup
 
 ## Posible features
 
-:white_large_square: Bog-Oh calculator of provided script
+:white_large_square: Big-Oh calculator of provided script
 
 <!-- :white_check_mark -->
