@@ -1,8 +1,9 @@
 from languages.language import Language
 from languages.compiledlanguage import CompiledLanguage
-import subprocess
 import languages.LanguageLibrary
-from grading.test import Test
+from grading.singletest import SingleTest 
+from grading.testset import TestSet 
+import subprocess
 import time
 
 LANG = []
@@ -26,29 +27,29 @@ class LanguageManager():
             print("LANGUAGE IS NOT SUPPORTED")
             return
         
-        test = Test("Yehor\n", "Hello, Yehor!", 1)
+        testSet = TestSet(1)
+        testSet.add_test(SingleTest("Yehor\n", "Hello, Yehor!", 1))
+        testSet.add_test(SingleTest("John\n", "Hello, John!", 1))
 
 
         if selected_language.__class__.__bases__[0].__name__ == "CompiledLanguage":
             compile_command = selected_language.compile_command(filepath)
             compile_exec = subprocess.Popen(compile_command)
             compile_exec.wait()
-            run_command = selected_language.run_command(filepath)
 
+        run_command = selected_language.run_command(filepath)
+
+        for test in testSet.tests:
             run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
             result = run_exec.communicate(input=test.test_input.encode())[0]
-            if result.decode().strip() == test.test_output:
-                print("Successfull")
-            else:
-                print("Failed")
+            test.evaluate(result.decode().strip())
 
+        success = True
+
+        for test in testSet.tests:
+            success = success and test.passed
+        
+        if success:
+            print("Successful")
         else:
-            run_command = selected_language.run_command(filepath)
-
-            run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-
-            result = run_exec.communicate(input=test.test_input.encode())[0]
-            if result.decode().strip() == test.test_output:
-                print("Successfull")
-            else:
-                print("Failed")
+            print("Failed")
