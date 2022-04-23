@@ -28,8 +28,8 @@ class LanguageManager():
             return
         
         testSet = TestSet(1)
-        testSet.add_test(SingleTest("Yehor\n", "Hello, Yehor!", 1))
-        testSet.add_test(SingleTest("John\n", "Hello, John!", 1))
+        testSet.add_test(SingleTest("3\n26 36\n7 5\n4 -2\n", "62\n12\n2\n", 1))
+        testSet.add_test(SingleTest("2\n26 36\n7 5\n4 -2", "62\n12", 1))
 
 
         if selected_language.__class__.__bases__[0].__name__ == "CompiledLanguage":
@@ -43,13 +43,5 @@ class LanguageManager():
             run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
             result = run_exec.communicate(input=test.test_input.encode())[0]
             test.evaluate(result.decode().strip())
-
-        success = True
-
-        for test in testSet.tests:
-            success = success and test.passed
         
-        if success:
-            print("Successful")
-        else:
-            print("Failed")
+        print(testSet.report(False))
