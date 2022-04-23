@@ -5,9 +5,9 @@ S-engine is a problem solution testing software.
 S-engine is currently on very early stage of development but we expect it to support Python and C++ in early stages of development.
 
 ## TODO
-:white_large_square: Basic run support  - application should be capable of running 
+:white_check_mark: Basic run support  - application should be capable of running 
 
-:white_large_square: Basic run capability with custom input
+:white_check_mark: Basic run capability with custom input
 
 :white_large_square: Basic result verification of the output
 
@@ -16,5 +16,9 @@ S-engine is currently on very early stage of development but we expect it to sup
 :white_large_square: Tests generator
 
 :white_large_square: Docker support
+
+## Posible features
+
+:white_large_square: Big-Oh calculator of provided script
 
 <!-- :white_check_mark -->
