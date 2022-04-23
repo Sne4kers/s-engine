@@ -9,3 +9,4 @@ class CompiledLanguage(Language):
 
     def compile_command(self, filepath):
         pass
+    

@@ -28,3 +28,4 @@ class TestSet():
         if not short_report:
             report["tests"] = tests
         return json.dumps(report, indent=4)
+        

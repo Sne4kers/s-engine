@@ -19,3 +19,4 @@ class SingleTest(Test):
         else:
             report["result"] = "failed"
         return report
+        

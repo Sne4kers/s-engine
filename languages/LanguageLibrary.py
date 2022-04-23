@@ -30,3 +30,4 @@ class Python(Language):
     
     def run_command(self, filepath):
         return ["python3", filepath]
+        

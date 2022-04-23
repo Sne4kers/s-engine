@@ -32,7 +32,7 @@ class LanguageManager():
         testSet.add_test(SingleTest("2\n26 36\n7 5\n4 -2", "62\n12", 1))
 
 
-        if selected_language.__class__.__bases__[0].__name__ == "CompiledLanguage":
+        if isinstance(selected_language, CompiledLanguage):
             compile_command = selected_language.compile_command(filepath)
             compile_exec = subprocess.Popen(compile_command)
             compile_exec.wait()

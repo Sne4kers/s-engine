@@ -5,3 +5,4 @@ for i in range(times):
     a = int(a)
     b = int(b)
     print(a + b)
+    
