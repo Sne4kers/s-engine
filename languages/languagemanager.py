@@ -1,9 +1,9 @@
 from languages.language import Language
 from languages.compiledlanguage import CompiledLanguage
-import languages.LanguageLibrary
 from grading.singletest import SingleTest 
 from grading.blocktest import BlockTest 
 from grading.testset import TestSet 
+import languages.LanguageLibrary
 import subprocess
 import time
 
@@ -57,10 +57,13 @@ class LanguageManager():
         for test in test_set.tests:
 
             if isinstance(test, SingleTest):
-                run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 try:
                     result = run_exec.communicate(input=test.test_input.encode(), timeout=test.time_limit)[0]
-                    test.evaluate(result.decode().strip())
+                    if run_exec.returncode != 0:
+                        test.add_verdict("RE")
+                    else:
+                        test.evaluate(result.decode().strip())
                 except subprocess.TimeoutExpired:
                     run_exec.kill()
                     test.add_verdict("TL")
@@ -68,14 +71,16 @@ class LanguageManager():
             if isinstance(test, BlockTest):
                 for key_test_in_block in BlockTest.tests:
                     test_in_block = test.tests[key_test_in_block]
-                    run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                    run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     try:
                         result = run_exec.communicate(input=test_in_block.test_input.encode(), timeout=test_in_block.time_limit)[0]
-                        test.evaluate(result.decode().strip(), key_test_in_block)
+                        if run_exec.returncode != 0:
+                            test_in_block.add_verdict("RE")
+                        else:
+                            test.evaluate(result.decode().strip(), key_test_in_block)
                     except subprocess.TimeoutExpired:
                         run_exec.kill()
                         test_in_block.add_verdict("TL")
 
-        
         # Print the report
         return test_set.report()
