@@ -2,22 +2,29 @@ import grading
 import json
 
 class TestSet():
-    testset_id = 0
-    tests = []
-    total_points = 0
     def __init__(self, testset_id):
+        self.tests = []
+        self.verdict = []
+        self.total_points = 0
         self.testset_id = testset_id
 
     def add_test(self, test):
         self.tests.append(test)
         self.total_points += test.points
 
-    def report(self, short_report):
+    def add_verdict(self, verdict_code):
+        if verdict_code not in self.verdict:
+            self.verdict.append(verdict_code)
+
+    def report(self):
         report = {}
         earned_points = 0
         tests = {}
         counter = 0
-        verdict = []
+
+        report["testset_id"] = self.testset_id
+        report["total_points"] = self.total_points
+        report["earned_points"] = earned_points
 
         for test in self.tests:
 
@@ -33,19 +40,14 @@ class TestSet():
                     earned_points += test.points
 
             for code in test.verdict:
-                if code not in verdict:
-                    verdict.append(code)
+                if code not in self.verdict:
+                    self.verdict.append(code)
 
             tests[counter] = test.report()
             counter += 1
 
-        report["testset_id"] = self.testset_id
-        report["total_points"] = self.total_points
-        report["earned_points"] = earned_points
-        report["verdict"] = verdict
-        
-        if not short_report:
-            report["tests"] = tests
+        report["verdict"] = self.verdict
+        report["tests"] = tests
 
         return json.dumps(report, indent=4)
         

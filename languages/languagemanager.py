@@ -38,7 +38,7 @@ class LanguageManager():
         block = BlockTest(3)
         block.add_test(SingleTest("3\n1 1\n2 3\n1 -2\n", "2\n5\n-1\n", 1, 1))
         block.add_test(SingleTest("3\n1 2\n2 3\n1 -2\n", "3\n5\n-1\n", 1, 1))
-        block.add_test(SingleTest("3\n1 3\n2 3\n1 -2\n", "5\n5\n-1\n", 1, 1))
+        block.add_test(SingleTest("3\n1 3\n2 3\n1 -2\n", "4\n5\n-1\n", 1, 1))
 
         test_set.add_test(block)
 
@@ -47,6 +47,9 @@ class LanguageManager():
             compile_command = selected_language.compile_command(filepath)
             compile_exec = subprocess.Popen(compile_command)
             compile_exec.wait()
+            if compile_exec.returncode == 1:
+                test_set.add_verdict("CE")
+                return test_set.report()
 
         run_command = selected_language.run_command(filepath)
 
@@ -75,4 +78,4 @@ class LanguageManager():
 
         
         # Print the report
-        print(test_set.report(False))
+        return test_set.report()

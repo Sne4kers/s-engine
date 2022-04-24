@@ -11,6 +11,10 @@ class BlockTest(Test):
 
     def evaluate(self, result, test_key):
         self.tests[test_key].evaluate(result)
+
+        if not self.tests[test_key].result:
+            self.result = self.tests[test_key].result
+
         for code in self.tests[test_key].verdict:
             if code not in self.verdict:
                 self.verdict.append(code)
@@ -35,4 +39,3 @@ class BlockTest(Test):
         
         report["tests"] = tests_in_report
         return report
-        

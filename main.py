@@ -4,7 +4,7 @@ from languages.languagemanager import LanguageManager
 
 def main():
     lm = LanguageManager()
-    lm.run("python3", "src_files/main.py")
+    print(lm.run("cpp17", "src_files/main.cpp"))
 
 
 if __name__ == "__main__":
