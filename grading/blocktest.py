@@ -3,6 +3,7 @@ from grading.test import Test
 class BlockTest(Test):
     tests = {}
     def __init__(self, points):
+        self.verdict = []
         self.points = points
 
     def add_test(self, test):
@@ -10,6 +11,10 @@ class BlockTest(Test):
 
     def evaluate(self, result, test_key):
         self.tests[test_key].evaluate(result)
+        for code in self.tests[test_key].verdict:
+            if code not in self.verdict:
+                self.verdict.append(code)
+        
 
     def report(self):
         report = {}
@@ -26,6 +31,8 @@ class BlockTest(Test):
             report["result"] = "passed"
         else:
             report["result"] = "failed"
+        report["verdict"] = self.verdict
         
         report["tests"] = tests_in_report
         return report
+        

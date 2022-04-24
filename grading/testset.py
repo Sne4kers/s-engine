@@ -17,6 +17,7 @@ class TestSet():
         earned_points = 0
         tests = {}
         counter = 0
+        verdict = []
 
         for test in self.tests:
 
@@ -31,12 +32,17 @@ class TestSet():
                 if passed:
                     earned_points += test.points
 
+            for code in test.verdict:
+                if code not in verdict:
+                    verdict.append(code)
+
             tests[counter] = test.report()
             counter += 1
 
         report["testset_id"] = self.testset_id
         report["total_points"] = self.total_points
         report["earned_points"] = earned_points
+        report["verdict"] = verdict
         
         if not short_report:
             report["tests"] = tests

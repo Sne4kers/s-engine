@@ -32,13 +32,13 @@ class LanguageManager():
         # Load test set - will be replaced with automatic load in future
         test_set = TestSet(1)
 
-        test_set.add_test(SingleTest("3\n26 36\n7 5\n4 -2\n", "62\n12\n2\n", 1))
-        test_set.add_test(SingleTest("2\n26 36\n7 5\n4 -2", "62\n12", 1))
+        test_set.add_test(SingleTest("3\n26 36\n7 5\n4 -2\n", "62\n12\n2\n", 1, 1))
+        test_set.add_test(SingleTest("2\n26 36\n7 5\n4 -2", "62\n12", 1, 1))
 
         block = BlockTest(3)
-        block.add_test(SingleTest("3\n1 1\n2 3\n1 -2\n", "2\n5\n-1\n", 1))
-        block.add_test(SingleTest("3\n1 2\n2 3\n1 -2\n", "3\n5\n-1\n", 1))
-        block.add_test(SingleTest("3\n1 3\n2 3\n1 -2\n", "5\n5\n-1\n", 1))
+        block.add_test(SingleTest("3\n1 1\n2 3\n1 -2\n", "2\n5\n-1\n", 1, 1))
+        block.add_test(SingleTest("3\n1 2\n2 3\n1 -2\n", "3\n5\n-1\n", 1, 1))
+        block.add_test(SingleTest("3\n1 3\n2 3\n1 -2\n", "5\n5\n-1\n", 1, 1))
 
         test_set.add_test(block)
 
@@ -55,15 +55,24 @@ class LanguageManager():
 
             if isinstance(test, SingleTest):
                 run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-                result = run_exec.communicate(input=test.test_input.encode())[0]
-                test.evaluate(result.decode().strip())
+                try:
+                    result = run_exec.communicate(input=test.test_input.encode(), timeout=test.time_limit)[0]
+                    test.evaluate(result.decode().strip())
+                except subprocess.TimeoutExpired:
+                    run_exec.kill()
+                    test.add_verdict("TL")
 
             if isinstance(test, BlockTest):
                 for key_test_in_block in BlockTest.tests:
                     test_in_block = test.tests[key_test_in_block]
                     run_exec = subprocess.Popen(run_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-                    result = run_exec.communicate(input=test_in_block.test_input.encode())[0]
-                    test.evaluate(result.decode().strip(), key_test_in_block)
+                    try:
+                        result = run_exec.communicate(input=test_in_block.test_input.encode(), timeout=test_in_block.time_limit)[0]
+                        test.evaluate(result.decode().strip(), key_test_in_block)
+                    except subprocess.TimeoutExpired:
+                        run_exec.kill()
+                        test_in_block.add_verdict("TL")
+
         
         # Print the report
         print(test_set.report(False))
