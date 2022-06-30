@@ -9,11 +9,9 @@ S-engine is currently on very early stage of development but we expect it to sup
 
 :white_check_mark: Basic run capability with custom input
 
-:white_large_square: Basic result verification of the output
+:white_check_mark: Basic result verification of the output
 
 :white_large_square: Result verification system with different output/input (file, stdout) as well as support for problems with multiple answers 
-
-:white_large_square: Tests generator
 
 :white_large_square: Docker support
 

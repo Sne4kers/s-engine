@@ -1,5 +1,20 @@
 from languages.compiledlanguage import CompiledLanguage
 from languages.language import Language
+'''
+
+This file contains "singletons" for all available languages.
+
+Every class of the language should inherit CompiledLanguage(in case solution
+requires pre-run compilation) or Language(if language uses intepreter).
+
+It's recommended to only define basic info about the language in __init__ and
+overload run_command and compile_command(in CompiledLanguage) methods.
+
+Every solution that arrives should use language present here. In case if
+there is no such language error will be thrown.
+
+'''
+
 
 class CPP17(CompiledLanguage):
 
