@@ -3,6 +3,8 @@ from languages.compiledlanguage import CompiledLanguage
 from grading.singletest import SingleTest 
 from grading.blocktest import BlockTest 
 from grading.testset import TestSet 
+
+import problemlibrary.sum_of_two_numbers
 import languages.LanguageLibrary
 import subprocess
 import time
@@ -30,17 +32,8 @@ class LanguageManager():
             return
         
         # Load test set - will be replaced with automatic load in future
-        test_set = TestSet(1)
-
-        test_set.add_test(SingleTest("3\n26 36\n7 5\n4 -2\n", "62\n12\n2\n", 1, 1))
-        test_set.add_test(SingleTest("2\n26 36\n7 5\n4 -2", "62\n12", 1, 1))
-
-        block = BlockTest(3)
-        block.add_test(SingleTest("3\n1 1\n2 3\n1 -2\n", "2\n5\n-1\n", 1, 1))
-        block.add_test(SingleTest("3\n1 2\n2 3\n1 -2\n", "3\n5\n-1\n", 1, 1))
-        block.add_test(SingleTest("3\n1 3\n2 3\n1 -2\n", "4\n5\n-1\n", 1, 1))
-
-        test_set.add_test(block)
+        
+        test_set = problemlibrary.sum_of_two_numbers.get_test_set()
 
         # Compile program first if language uses compiler
         if isinstance(selected_language, CompiledLanguage):

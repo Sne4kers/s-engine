@@ -13,7 +13,7 @@ class CPP17(CompiledLanguage):
         filename_without_extension = filepath.split("/")[-1].split(".")[0]
         filepath_without_file = "/".join(filepath.split("/")[:-1]) + "/"
         to_be_generated_filepath = filepath_without_file + filename_without_extension + ".out"
-        return ["g++", "-o", to_be_generated_filepath, filepath]
+        return ["g++", "-o", to_be_generated_filepath, filepath, "-std=c++17"]
     
     def run_command(self, filepath):
         filename_without_extension = filepath.split("/")[-1].split(".")[0]

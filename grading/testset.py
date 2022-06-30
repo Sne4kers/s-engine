@@ -24,7 +24,6 @@ class TestSet():
 
         report["testset_id"] = self.testset_id
         report["total_points"] = self.total_points
-        report["earned_points"] = earned_points
 
         for test in self.tests:
 
@@ -46,6 +45,7 @@ class TestSet():
             tests[counter] = test.report()
             counter += 1
 
+        report["earned_points"] = earned_points
         report["verdict"] = self.verdict
         report["tests"] = tests
 
