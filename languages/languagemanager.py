@@ -3,6 +3,8 @@ from languages.compiledlanguage import CompiledLanguage
 from grading.singletest import SingleTest 
 from grading.blocktest import BlockTest 
 from grading.testset import TestSet 
+import os.path
+import os
 
 import problemlibrary.sum_of_two_numbers
 import languages.LanguageLibrary
@@ -29,7 +31,12 @@ class LanguageManager():
             selected_language = NAMEMAP[language]
         else:
             print("LANGUAGE IS NOT SUPPORTED")
-            return
+            return "LANGUAGE IS NOT SUPPORTED"
+
+        if not os.path.isfile("/" + filepath):
+            print(filepath)
+            print(os.listdir("/usr/grading_sys/src_files"))
+            return "NO SUCH FILE"
         
         # Load test set - will be replaced with automatic load in future
         

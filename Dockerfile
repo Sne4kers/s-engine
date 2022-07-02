@@ -7,4 +7,4 @@ WORKDIR /usr/grading_sys/
 
 COPY ./ ./
 
-CMD [ "python3", "./main.py"]
+CMD ["neofetch"]

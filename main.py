@@ -19,7 +19,13 @@ def main():
     #test_id = args.test
     language = args.language
 
-    print(lm.run(language, "src_files/" + solution_file))
+    result = lm.run(language, "/usr/grading_sys/src_files/" + solution_file)
+
+    f = open("src_files/results.json", "w")
+    f.write(result)
+    f.close()
+
+    print(result)
 
 
 if __name__ == "__main__":
