@@ -32,10 +32,9 @@ class LanguageManager():
         else:
             print("LANGUAGE IS NOT SUPPORTED")
             return "LANGUAGE IS NOT SUPPORTED"
-
-        if not os.path.isfile("/" + filepath):
+        
+        if not os.path.isfile(os.getcwd() + "/" + filepath):
             print(filepath)
-            print(os.listdir("/usr/grading_sys/src_files"))
             return "NO SUCH FILE"
         
         # Load test set - will be replaced with automatic load in future

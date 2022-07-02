@@ -19,9 +19,10 @@ def main():
     #test_id = args.test
     language = args.language
 
-    result = lm.run(language, "/usr/grading_sys/src_files/" + solution_file)
+    result = lm.run(language, "src_files/" + solution_file)
 
-    f = open("src_files/results.json", "w")
+    filename_for_results = solution_file.split(".")[0] + ".json"
+    f = open("results/" + filename_for_results, "w")
     f.write(result)
     f.close()
 
