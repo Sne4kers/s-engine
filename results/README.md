@@ -1,0 +1,1 @@
+If you are running S-engine without Docker containe, results of grading will appear here.

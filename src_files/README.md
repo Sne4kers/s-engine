@@ -1,0 +1,1 @@
+If you are running S-engine without Docker containe, put solutions you want to run in this folder.
