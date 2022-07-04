@@ -1,1 +1,1 @@
-If you are running S-engine without Docker containe, put solutions you want to run in this folder.
+If you are running S-engine without Docker container, put solutions you want to run in this folder.
