@@ -1,6 +1,7 @@
-# Example of forming test set in form of python file
+# Sum of two number problem
+# Example of forming test set in form of python file.
 # TestSet class has method for transforming test set into json, 
-# which is used for actual grading
+# which is used for actual grading.
 
 # You can also find JSON representation of declaring this test set
 
