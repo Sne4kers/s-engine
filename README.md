@@ -11,7 +11,7 @@ results of grading.
 
 ## How to run
 
-S-engine takes only 2 parameters at the moment:
+S-engine takes only 3 parameters at the moment:
 
 ```
 usage: s-engine [-h] -s SOLUTION -lang LANGUAGE -t TEST
@@ -25,7 +25,7 @@ options:
   -t TEST, --test TEST  Filename of the test set.
 ```
 
-There are no default values for them, so both of them are required in order to run the check of the solution.
+There are no default values for them, so all of them are required in order to run the check of the solution.
 
 So, in order to run your solution put your soultion into `src_files` directory and test set in form of JSON in `problemlibrary` directory and run the `main.py` with options that fit your solution. The resutls will be available in the `results` folder and printed into the terminal.
 
@@ -103,10 +103,6 @@ Results will always appear in file that has same name as the solution, but with
 }
 ```
 
-## How to add custom test set
-
-S-engine has a test for "Sum of two numbers N-times" problem - you can check it at `problemlibrary` folder. Probably, the way test sets are provided will be changed.
-
 ## Running with Docker
 
 Go to repository and build Docker iamge
@@ -122,7 +118,7 @@ docker run -it --name s-engine-instance-1 --mount type=bind,source="$(pwd)"/solu
 
 ```
 
-It example above, with `--mount type=bind,source="$(pwd)"/solutions,target=/usr/grading_sys/src_files --mount type=bind,source="$(pwd)"/results,target=/usr/grading_sys/results --mount type=bind,source="$(pwd)"/problemlibrary,target=/usr/grading_sys/problemlibrary ` we make sure that folders for results of checks, folder with solutions and test sets are mounted into the workdirectory of the container. After that we make regular call of python program and setup options for name of the solution file and language that is used to run this program.
+It example above, with `--mount type=bind,source="$(pwd)"/solutions,target=/usr/grading_sys/src_files --mount type=bind,source="$(pwd)"/results,target=/usr/grading_sys/results --mount type=bind,source="$(pwd)"/problemlibrary,target=/usr/grading_sys/problemlibrary` we make sure that folders for results of checks, folder with solutions and test sets are mounted into the workdirectory of the container. After that we make regular call of python program and setup options for name of the solution file and language that is used to run this program.
 
 
 ## TODO
