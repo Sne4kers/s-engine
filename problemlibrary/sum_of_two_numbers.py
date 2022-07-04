@@ -1,9 +1,15 @@
+# Example of forming test set in form of python file
+# TestSet class has method for transforming test set into json, 
+# which is used for actual grading
+
+# You can also find JSON representation of declaring this test set
+
 from grading.singletest import SingleTest 
 from grading.blocktest import BlockTest 
 from grading.testset import TestSet 
 
 def get_test_set():
-    test_set = TestSet(1)
+    test_set = TestSet(0, "Sum of two numbers")
 
     test_set.add_test(SingleTest("3\n26 36\n7 5\n4 -2\n", "62\n12\n2\n", 1, 1))
     test_set.add_test(SingleTest("2\n26 36\n7 5\n4 -2", "62\n12", 1, 1))

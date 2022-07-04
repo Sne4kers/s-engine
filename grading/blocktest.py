@@ -1,4 +1,6 @@
 from grading.test import Test
+from grading.singletest import SingleTest
+import json
 
 class BlockTest(Test):
     tests = {}
@@ -24,13 +26,13 @@ class BlockTest(Test):
         report = {}
         passed = True
         tests_in_report = {}
-
+        
         for test in self.tests:
             tests_in_report[len(tests_in_report)] = self.tests[test].report()
             passed = passed and self.tests[test].result
 
         report["total_points"] = self.points
-        
+
         if passed:
             report["result"] = "passed"
         else:
@@ -39,3 +41,33 @@ class BlockTest(Test):
         
         report["tests"] = tests_in_report
         return report
+    
+    def to_dict(self):
+        str_represent = {}
+        tests_in_report = {}
+
+        for test in self.tests:
+            tests_in_report[len(tests_in_report)] = self.tests[test].to_dict()
+
+        str_represent["total_points"] = self.points
+        
+        str_represent["tests"] = tests_in_report
+        return str_represent
+
+    def parse_dict(dict):
+        tests_in_report = []
+
+        for key in dict["tests"]:
+            test = dict["tests"][key]
+            if "tests" in test:
+                tests_in_report.append(BlockTest.parse_dict(test))
+            else:
+                tests_in_report.append(SingleTest.parse_dict(test))
+
+        to_return = BlockTest(dict["total_points"])
+        for test in tests_in_report:
+            to_return.add_test(test)
+            
+        return to_return
+
+

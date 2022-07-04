@@ -2,9 +2,10 @@ import grading
 import json
 
 class TestSet():
-    def __init__(self, testset_id):
+    def __init__(self, testset_id, name):
         self.tests = []
         self.verdict = []
+        self.name = name
         self.total_points = 0
         self.testset_id = testset_id
 
@@ -23,6 +24,7 @@ class TestSet():
         counter = 0
 
         report["testset_id"] = self.testset_id
+        report["test_set_name"] = self.name
         report["total_points"] = self.total_points
 
         for test in self.tests:
@@ -50,4 +52,37 @@ class TestSet():
         report["tests"] = tests
 
         return json.dumps(report, indent=4)
+    
+    def to_json(self):
+        str_represent = {}
+        str_represent["testset_id"] = self.testset_id
+        str_represent["name"] = self.name
+
+        tests_in_set = {}
+
+        for test in self.tests:
+            tests_in_set[len(tests_in_set)] = test.to_dict()
+
+        str_represent["tests"] = tests_in_set
+
+        return json.dumps(str_represent, indent=4)
+
+    def parse_json(json_string):
+        test_dict = json.loads(json_string)
+        tests_in_report = []
+
+        for key in test_dict["tests"]:
+            test = test_dict["tests"][key]
+            if "tests" in test:
+                tests_in_report.append(grading.blocktest.BlockTest.parse_dict(test))
+            else:
+                tests_in_report.append(grading.singletest.SingleTest.parse_dict(test))
+
+        to_return = TestSet(test_dict["testset_id"], test_dict["name"])
+        for test in tests_in_report:
+            to_return.add_test(test)
+            
+        return to_return
+
+
         

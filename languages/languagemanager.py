@@ -6,8 +6,8 @@ from grading.testset import TestSet
 import os.path
 import os
 
-import problemlibrary.sum_of_two_numbers
 import languages.LanguageLibrary
+import problemlibrary.sum_of_two_numbers
 import subprocess
 import time
 
@@ -25,7 +25,7 @@ class LanguageManager():
                 for extension in language.file_extensions:
                     EXTLIST.append(extension)
 
-    def run(self, language, filepath):
+    def run(self, language, filepath, test_set):
         # Check if language is supported
         if language in NAMEMAP:
             selected_language = NAMEMAP[language]
@@ -36,10 +36,6 @@ class LanguageManager():
         if not os.path.isfile(os.getcwd() + "/" + filepath):
             print(filepath)
             return "NO SUCH FILE"
-        
-        # Load test set - will be replaced with automatic load in future
-        
-        test_set = problemlibrary.sum_of_two_numbers.get_test_set()
 
         # Compile program first if language uses compiler
         if isinstance(selected_language, CompiledLanguage):

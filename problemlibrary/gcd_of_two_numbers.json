@@ -1,0 +1,41 @@
+{
+    "testset_id": 1,
+    "name": "GCD of two numbers",
+    "tests": {
+        "0": {
+            "test_input": "3\n26 36\n7 5\n4 2\n",
+            "test_output": "2\n1\n2",
+            "time_limit": 1,
+            "points": 1
+        },
+        "1": {
+            "test_input": "2\n26 36\n7 5\n4 2",
+            "test_output": "2\n1",
+            "time_limit": 1,
+            "points": 1
+        },
+        "2": {
+            "total_points": 3,
+            "tests": {
+                "0": {
+                    "test_input": "3\n1 7\n48 17\n5 11\n",
+                    "test_output": "1\n1\n1",
+                    "time_limit": 1,
+                    "points": 1
+                },
+                "1": {
+                    "test_input": "3\n1 1\n24 36\n7 13\n",
+                    "test_output": "1\n12\n1",
+                    "time_limit": 1,
+                    "points": 1
+                },
+                "2": {
+                    "test_input": "3\n5 5\n12 24\n2 17\n",
+                    "test_output": "5\n12\n1",
+                    "time_limit": 1,
+                    "points": 1
+                }
+            }
+        }
+    }
+}
